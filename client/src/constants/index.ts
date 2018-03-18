@@ -1,0 +1,10 @@
+export const SIGN_IN_SUCCESS = "SIGN_IN_SUCCESS";
+export const SIGN_IN_FAILED = "SIGN_IN_FAILED";
+export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
+export const SIGN_UP_FAILED = "SIGN_UP_FAILED";
+export const CURRENT_USER = "CURRENT_USER";
+export const ADD_TASK_GROUP_SUCCESS = "ADD_TASK_GROUP_SUCCESS";
+export const GET_TASK_GROUPS = "GET_TASK_GROUPS";
+export const FIND_TASK_GROUP = "FIND_TASK_GROUP";
+export const CREATE_TASK = "CREATE_TASK";
+export const FIND_TASKS = "FIND_TASKS";
