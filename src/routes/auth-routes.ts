@@ -17,7 +17,7 @@ router.post("/signin", (req, res, next) => {
 
         req.logIn(user, (err) => {
             if (err) {
-            return next(err);
+                return next(err);
             }
             return res.status(200).send(user.id);
         });
@@ -37,8 +37,16 @@ router.post("/signup", (req, res) => {
 });
 
 router.get("/signout", (req, res) => {
+    if (req.session) {
+        // delete session object
+        req.session.destroy(function(err) {
+            if (err) {
+                return res.send(err);
+            }
+        });
+    }
     req.logout();
-    res.send(req.user);
+    res.send();
 });
 
 export default router;

@@ -3,6 +3,6 @@ export type User = {
 };
 
 export type UserState = {
-    userId: string | undefined;
+    user?: User;
     status: boolean;
 };

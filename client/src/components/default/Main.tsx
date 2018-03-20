@@ -1,11 +1,17 @@
 import * as React from "react";
 import Navbar from "./Navbar";
 
-class Main extends React.Component {
+interface MainProps {
+    isUserAuthenticated: boolean;
+    toggleAuthentication: () => void;
+}
+
+
+class Main extends React.Component<MainProps> {
     render () {
         return (
             <div>
-                <Navbar />
+                <Navbar isUserAuthenticated={this.props.isUserAuthenticated} toggleAuthentication={() => this.props.toggleAuthentication()} />
                 {this.props.children}
             </div>
         );

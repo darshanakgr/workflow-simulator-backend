@@ -67,7 +67,7 @@ class TaskGroupView extends React.Component<TaskGroupViewProps> {
             );
         });
         return (
-            <div className="main offset-md-2">
+            <div>
                 <div className="row">
                     <div className="card col-md-5">
                         <div className="card-body">

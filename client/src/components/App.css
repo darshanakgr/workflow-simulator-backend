@@ -3,6 +3,52 @@
   margin-top: 10px;
 }
 
+.circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: aquamarine;
+  margin: 10px auto;
+  padding-top: 20px;
+}
+
+.feature {
+  text-align: center;
+}
+
+.feature > h3 {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  text-transform: capitalize;
+}
+
+img > .cover{
+  width: 100%;
+  height: auto;
+}
+
+.material-icons {
+  font-size: 59px;
+  color: aliceblue;
+}
+
+.heading {
+  font-family: 'Roboto', sans-serif;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+section {
+  padding: 30px 200px;
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  text-align: center;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

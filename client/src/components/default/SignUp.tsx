@@ -2,22 +2,20 @@ import * as React from "react";
 import { Row, Col, Button, ControlLabel, FormControl, FormGroup } from "react-bootstrap";
 import * as ReactDOM from "react-dom";
 import { Dispatch, connect } from "react-redux";
-import { signIn } from "../../services/user";
+import { signUp } from "../../services/user";
 import { withRouter } from "react-router";
-import { browserHistory } from "react-router";
 import Alert from "./Alert";
+// import { browserHistory } from "react-router";
 
-interface SignInProps {
+interface SignUpProps {
     dispatch: Dispatch<{}>;
 }
 
-class SignIn extends React.Component<SignInProps> {
-    handleSignIn () {
+class SignUp extends React.Component<SignUpProps> {
+    handleSignUp () {
         const email: string = (ReactDOM.findDOMNode(this.refs.email) as HTMLInputElement).value;
         const password: string = (ReactDOM.findDOMNode(this.refs.password) as HTMLInputElement).value;
-        this.props.dispatch(signIn(email, password)).then(() => {
-            browserHistory.push("/dashboard");
-        });
+        this.props.dispatch(signUp(email, password));
     }
 
     render() {
@@ -52,7 +50,7 @@ class SignIn extends React.Component<SignInProps> {
                     <Row>
                         <Col md={4}>
                             <FormGroup>
-                                <Button bsStyle="primary" onClick={this.handleSignIn.bind(this)}>Sign in</Button>
+                                <Button bsStyle="primary" onClick={this.handleSignUp.bind(this)}>Sign up</Button>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -66,4 +64,4 @@ const mapStateToProps = (state: any) => {
     return {};
 };
 
-export default withRouter(connect(mapStateToProps)(SignIn));
+export default withRouter(connect(mapStateToProps)(SignUp));

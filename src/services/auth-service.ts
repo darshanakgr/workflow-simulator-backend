@@ -1,15 +1,18 @@
 import passport from "passport";
-import session from "cookie-session";
+import session from "express-session";
+import { mongoose } from "../db/db-connection";
+import connectMongo from "connect-mongo";
 import { Strategy as LocalStrategy } from "passport-local";
 import { User } from "../models/user";
 import { Express, Request } from "express";
+
+const MongoStore = connectMongo(session);
 
 const init = (app: Express) => {
     passport.use(new LocalStrategy({
         usernameField: "email",
         passwordField: "password"
     }, (email, password, done) => {
-        console.log(email, password);
         User.findOne({email}).then((user) => {
             // if the user is not found
             if (!user) {
@@ -34,19 +37,23 @@ const init = (app: Express) => {
         done(undefined, user.id);
     });
 
-    // app.use(session({
-    //     secret: "simulator",
-    //     resave: true,
-    //     saveUninitialized: true
-    // }));
-
     app.use(session({
-        name: "session",
-        keys: ["secret"],
-        maxAge: 3600 * 24 * 1000
+        secret: "simulator",
+        resave: true,
+        store: new MongoStore({
+            mongooseConnection: mongoose.connection,
+            autoRemove: "interval",
+            autoRemoveInterval: 10
+        }),
+        saveUninitialized: false
     }));
+
     app.use(passport.initialize());
     app.use(passport.session());
+
+    app.use((req, res, next) => {
+        next();
+    });
 };
 
 export default { init };

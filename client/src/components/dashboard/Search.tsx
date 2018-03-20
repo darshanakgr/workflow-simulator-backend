@@ -10,7 +10,7 @@ class Search extends React.Component {
 
     render () {
         return (
-            <div className="main offset-md-2">
+            <div>
                 <h2>search</h2>
                 <h4>{this.groupId}</h4>
                 <div className="card col-md-6">

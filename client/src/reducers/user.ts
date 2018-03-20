@@ -1,35 +1,35 @@
 import { Action, handleActions } from "redux-actions";
-import { SIGN_IN_SUCCESS, SIGN_IN_FAILED, SIGN_UP_FAILED, SIGN_UP_SUCCESS, CURRENT_USER } from "../constants";
+import { SIGN_IN, SIGN_UP, SIGN_OUT, CURRENT_USER } from "../constants";
 import { User, UserState } from "../models/user";
 
 const initialState: UserState = {
     status: false,
-    userId: undefined
+    user: undefined
 };
 
 export default handleActions<UserState, User>({
-    [SIGN_IN_SUCCESS]: (state: UserState, action: Action<User>): UserState => {
+    [SIGN_IN]: (state: UserState, action: Action<User>): UserState => {
         return {
             status: true,
-            userId: action.payload ? action.payload.userId : undefined
+            user: action.payload
         };
     },
     [CURRENT_USER]: (state: UserState, action: Action<User>): UserState => {
         return {
             status: true,
-            userId: action.payload ? action.payload.userId : undefined
+            user: action.payload
         };
     },
-    [SIGN_IN_FAILED]: (state: UserState, action: Action<User>): UserState => {
+    [SIGN_OUT]: (state: UserState, action: Action<User>): UserState => {
         return {
             status: false,
-            userId: undefined
+            user: undefined
         };
     },
-    [SIGN_UP_SUCCESS]: (state: UserState, action: Action<User>): UserState => {
-        return state;
-    },
-    [SIGN_UP_FAILED]: (state: UserState, action: Action<User>): UserState => {
-        return state;
+    [SIGN_UP]: (state: UserState, action: Action<User>): UserState => {
+        return {
+            status: false,
+            user: undefined
+        };
     }
 }, initialState);

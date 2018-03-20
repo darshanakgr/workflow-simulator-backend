@@ -4,15 +4,15 @@ import { connect, Dispatch } from "react-redux";
 import { createNewTaskGroup, getAllTaskGroups } from "../../services/task-group";
 import { TaskGroupState } from "../../models/task-group";
 import { browserHistory } from "react-router";
-import { UserState } from "../../models/user";
+import { User } from "../../models/user";
 import { withRouter } from "react-router";
-import { currentUser } from "../../services/user";
+import Auth from "../../services/auth";
 
 
 interface TaskGroupProps {
     dispatch: Dispatch<{}>;
     groups: TaskGroupState;
-    user: UserState;
+    user: User;
 }
 
 class TaskGroup extends React.Component<TaskGroupProps> {
@@ -20,12 +20,9 @@ class TaskGroup extends React.Component<TaskGroupProps> {
     constructor(props, context) {
         super(props, context);
         this.handleClose = this.handleClose.bind(this);
-        const dipatch: any = this.props.dispatch;
-        dipatch(currentUser()).then(() => {
-            if (this.props.user.userId) {
-                this.props.dispatch(getAllTaskGroups(this.props.user.userId));
-            }
-        });
+        if (Auth.isUserAuthenticated()) {
+            this.props.dispatch(getAllTaskGroups(Auth.getUserId() || ""));
+        }
     }
 
     handleSave() {
@@ -61,7 +58,7 @@ class TaskGroup extends React.Component<TaskGroupProps> {
             );
         });
         return (
-            <div className="main offset-md-2">
+            <div>
                 <button type="button" className="btn btn-outline-primary" data-toggle="modal" data-target="#new-task-group">
                 New Task Group
                 </button>
@@ -122,7 +119,7 @@ class TaskGroup extends React.Component<TaskGroupProps> {
 const mapStateToProps = (state: any) => {
     return {
         groups: state.group,
-        user: state.user
+        user: state.user.user
     };
 };
 

@@ -79,6 +79,22 @@ const socketHandler = (socket: SocketIO.Socket) => {
             callback("GroupId or Key cannot be empty");
         }
     });
+
+    socket.on("authenticate", (key: string, groupId: string, callback: Function) => {
+        if (groupId && key) {
+            PermissionController.authenticate(key, groupId, FULL_ACCESS).then((authenticated) => {
+                console.log(authenticated);
+                if (!authenticated) {
+                    return callback("Required access level is not provided");
+                }
+                return callback();
+            }).catch((e) => {
+                callback(e);
+            });
+        } else {
+            callback("GroupId or Key cannot be empty");
+        }
+    });
 };
 
 export default socketHandler;
