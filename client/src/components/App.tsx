@@ -24,6 +24,7 @@ class App extends React.Component<{}, AppState> {
     this.state = {
         isUserAuthenticated: false
     };
+    this.toggleAuthentication = this.toggleAuthentication.bind(this);
   }
 
   toggleAuthentication() {
@@ -36,7 +37,7 @@ class App extends React.Component<{}, AppState> {
     return (
       <div className="App">
         <Router history={browserHistory}>
-            <Route path="/" render={() => <Main isUserAuthenticated={this.state.isUserAuthenticated} toggleAuthentication={() => this.toggleAuthentication()} />}>
+            <Route path="/" component={Main}>
                 <IndexRoute component={Home} />
                 <Route path="/docs" component={Documentation} />
                 <Route path="/signin" component={SignIn} />

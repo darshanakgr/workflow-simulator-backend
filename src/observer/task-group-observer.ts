@@ -17,6 +17,7 @@ class TaskGroupObserver {
     }
 
     notifyObserver(error: WSError, message?: WSMessage) {
+        console.log(Object.keys(this.sockets).length);
         for (const socketId in this.sockets) {
             if (this.sockets[socketId] && this.sockets[socketId].connected) {
                 this.sockets[socketId].emit("notifyUpdate", error, message);

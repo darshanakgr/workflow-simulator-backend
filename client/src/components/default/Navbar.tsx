@@ -5,16 +5,12 @@ import { signOut } from "../../services/user";
 
 interface NavbarProps {
     dispatch: Dispatch<{}>;
-    isUserAuthenticated: boolean;
-    toggleAuthentication: () => void;
 }
 
 class NavBar extends React.Component<NavbarProps> {
 
     signOut() {
-        this.props.dispatch(signOut()).then(() => {
-            this.props.toggleAuthentication();
-        });
+        this.props.dispatch(signOut());
     }
 
     render() {
@@ -34,7 +30,7 @@ class NavBar extends React.Component<NavbarProps> {
                             <a className="nav-link" href="/docs">Documentation</a>
                         </li>
                     </ul>
-                    {this.props.isUserAuthenticated ? (
+                    {true ? (
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item px-3">
                                 <a className="nav-link btn" onClick={this.signOut.bind(this)}>Sign out</a>

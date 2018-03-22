@@ -83,7 +83,6 @@ const socketHandler = (socket: SocketIO.Socket) => {
     socket.on("authenticate", (key: string, groupId: string, callback: Function) => {
         if (groupId && key) {
             PermissionController.authenticate(key, groupId, FULL_ACCESS).then((authenticated) => {
-                console.log(authenticated);
                 if (!authenticated) {
                     return callback("Required access level is not provided");
                 }

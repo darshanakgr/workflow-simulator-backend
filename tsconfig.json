@@ -9,7 +9,7 @@
         "target": "es6",
         "moduleResolution": "node",
         "baseUrl": ".",
-        "watch": true,
+        "watch": false,
         "paths": {
             "*": [
                 "node_modules/*"
