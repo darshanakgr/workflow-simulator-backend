@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "description": "A starting point for Node.js express apps with TypeScript",
   "author": "Darshana Rathnayake",
+  "engines": {
+    "node": "8.9.3"
+  },
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "node /dist/server.js",
     "build": "npm run build-ts && npm run tslint",
     "serve": "nodemon dist/server.js",
     "test": "mocha -r ts-node/register src/test/*.ts",
