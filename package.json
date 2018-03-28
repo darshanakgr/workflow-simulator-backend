@@ -4,17 +4,14 @@
   "description": "A starting point for Node.js express apps with TypeScript",
   "author": "Darshana Rathnayake",
   "scripts": {
-    "dev": "concurrently --kill-others-on-fail \"npm run build\" \"npm run serve\"",
+    "start": "node dist/server.js",
     "build": "npm run build-ts && npm run tslint",
     "serve": "nodemon dist/server.js",
     "test": "mocha -r ts-node/register src/test/*.ts",
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "copy-static-assets": "ts-node copyStaticAssets.ts",
-    "debug": "npm run build && npm run watch-debug",
-    "serve-debug": "nodemon --inspect dist/server.js",
-    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run serve-debug\""
+    "copy-static-assets": "ts-node copyStaticAssets.ts"
   },
   "dependencies": {
     "axios": "^0.18.0",

@@ -12,10 +12,10 @@ import cors from "cors";
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
+const port = process.env.PORT || 3001;
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
-// app.use(cookieParser());
 app.use(cors());
 
 authService.init(app);
@@ -28,8 +28,6 @@ app.get("*", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
-server.listen(3001, () => {
-  const date = new Date();
-  console.log(`${date.getHours()} : ${date.getMinutes()} : ${date.getSeconds()}`);
-  console.log("Server is up on 3001");
+server.listen(port, () => {
+  console.log(`Server is up on ${port}`);
 });

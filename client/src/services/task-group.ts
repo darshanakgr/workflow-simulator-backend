@@ -6,7 +6,7 @@ import { showMessage } from "../actions/alert";
 
 export const createNewTaskGroup = (taskgroup) => {
     return (dispatch: Dispatch<{}>) => {
-        axios.post(`http://localhost:3001/api/taskgroup`, taskgroup).then((res) => {
+        axios.post(`/api/taskgroup`, taskgroup).then((res) => {
             dispatch(actions.addTaskGroupSuccess(res.data as TaskGroup));
         }).catch(e => dispatch(showMessage(true, e.message)));
     };
@@ -14,7 +14,7 @@ export const createNewTaskGroup = (taskgroup) => {
 
 export const getAllTaskGroups = () => {
     return (dispatch: Dispatch<{}>) => {
-        axios.get(`http://localhost:3001/api/taskgroup/`).then((res) => {
+        axios.get(`/api/taskgroup/`).then((res) => {
             dispatch(actions.getTaskGroups(res.data as TaskGroup[]));
         }).catch(e => dispatch(showMessage(true, e.message)));
     };
@@ -23,7 +23,7 @@ export const getAllTaskGroups = () => {
 export const findTaskGroup = (groupId: string) => {
     return (dispatch: Dispatch<{}>) => {
         return new Promise<TaskGroup>((resolve, reject) => {
-            axios.get(`http://localhost:3001/api/taskgroup/find/${groupId}`).then((res) => {
+            axios.get(`/api/taskgroup/find/${groupId}`).then((res) => {
                 dispatch(actions.findTaskGroup(res.data as TaskGroup));
                 resolve(res.data);
             }).catch(e => dispatch(showMessage(true, e.message)));
@@ -33,7 +33,7 @@ export const findTaskGroup = (groupId: string) => {
 
 export const deleteTaskGroup = (groupId: string) => {
     return (dispatch: Dispatch<{}>) => {
-        axios.delete(`http://localhost:3001/api/taskgroup/${groupId}`).then((res) => {
+        axios.delete(`/api/taskgroup/${groupId}`).then((res) => {
             dispatch(showMessage(false, "Task Group Deleted Successfully!"));
             dispatch(getAllTaskGroups());
         }).catch(e => dispatch(showMessage(true, e.message)));
@@ -43,7 +43,7 @@ export const deleteTaskGroup = (groupId: string) => {
 export const editTaskGroup = (taskgroup) => {
     return (dispatch: Dispatch<{}>) => {
         return new Promise<TaskGroup>((resolve, reject) => {
-            axios.put(`http://localhost:3001/api/taskgroup/`, taskgroup).then((res) => {
+            axios.put(`/api/taskgroup/`, taskgroup).then((res) => {
             dispatch(showMessage(false, "Task Group Updated Successfully!"));
             resolve(taskgroup);
         }).catch(e => dispatch(showMessage(true, e.message)));
@@ -53,7 +53,7 @@ export const editTaskGroup = (taskgroup) => {
 
 export const getAllSharedTaskGroups = () => {
     return (dispatch: Dispatch<{}>) => {
-        axios.get(`http://localhost:3001/api/taskgroup/shared`).then((res) => {
+        axios.get(`/api/taskgroup/shared`).then((res) => {
             dispatch(actions.getTaskGroups(res.data as TaskGroup[]));
         }).catch(e => dispatch(showMessage(true, e.message)));
     };

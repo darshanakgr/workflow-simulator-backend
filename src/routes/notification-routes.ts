@@ -18,5 +18,20 @@ router.get("/", (req, res) => {
     });
 });
 
+router.post("/users", (req, res) => {
+    NotificationController.getUsers(req.body.userIds).then((result) => {
+        res.status(200).send(result);
+    }).catch((e) => {
+        res.status(400).send(e);
+    });
+});
+
+router.post("/reply", (req, res) => {
+    NotificationController.replyNotification(req.body.id, req.body.accepted).then(() => {
+        res.status(200).send();
+    }).catch((e) => {
+        res.status(400).send(e);
+    });
+});
 
 export default router;

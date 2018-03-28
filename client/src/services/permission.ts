@@ -5,7 +5,7 @@ import { showMessage } from "../actions/alert";
 
 export const getPermission = (groupId: string) => {
     return (dispatch: Dispatch<{}>) => {
-        axios.get(`http://localhost:3001/api/taskgroup/secret/${groupId}`).then((res) => {
+        axios.get(`/api/taskgroup/secret/${groupId}`).then((res) => {
             dispatch(actions.getPermission(res.data.secretKey));
         }).catch(e => dispatch(showMessage(true, e.message)));
     };
@@ -13,7 +13,7 @@ export const getPermission = (groupId: string) => {
 
 export const shareTaskGroup = (email: string, groupId: string) => {
     return (dispatch: Dispatch<{}>) => {
-        axios.post(`http://localhost:3001/api/taskgroup/share/${email}/${groupId}`).then((res) => {
+        axios.post(`/api/taskgroup/share/${email}/${groupId}`).then((res) => {
             dispatch(showMessage(false, `Task shared with ${email} successfully!`));
         }).catch(e => dispatch(showMessage(true, e.message)));
     };
@@ -21,7 +21,7 @@ export const shareTaskGroup = (email: string, groupId: string) => {
 
 export const getSharedTaskGroups = () => {
     return (dispatch: Dispatch<{}>) => {
-        axios.get(`http://localhost:3001/api/taskgroup/share`).then((res) => {
+        axios.get(`/api/taskgroup/share`).then((res) => {
             dispatch(actions.getSharedTaskGroups(res.data));
         }).catch(e => dispatch(showMessage(true, e.message)));
     };
