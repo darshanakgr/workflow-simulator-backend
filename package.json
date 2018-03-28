@@ -7,7 +7,7 @@
     "node": "8.9.3"
   },
   "scripts": {
-    "start": "npm run build && node dist/server.js",
+    "start": "node dist/server.js",
     "build": "npm run build-ts && npm run tslint",
     "serve": "nodemon dist/server.js",
     "test": "mocha -r ts-node/register src/test/*.ts",
