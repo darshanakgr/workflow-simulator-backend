@@ -49,10 +49,10 @@ const socketHandler = (socket: SocketIO.Socket) => {
     socket.on("updateProgress", (task, key, callback) => {
         if (task.taskId && task.groupId && key) {
             PermissionController.authenticate(key, task.groupId, FULL_ACCESS).then((authenticated) => {
-                if (authenticated) {
-                    return ObserverController.notifyUpdate(task);
+                if (!authenticated) {
+                    return callback("Required access level is not provided");
                 }
-                return callback("Required access level is not provided");
+                return ObserverController.notifyUpdate(task);
             }).then((res) => {
                 callback(undefined, res);
             }).catch((e) => {

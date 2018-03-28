@@ -1,30 +1,30 @@
 import * as React from "react";
 import { TaskGroup } from "../../models/task-group";
 import { connect, Dispatch } from "react-redux";
-import { findTaskGroup, deleteTaskGroup, editTaskGroup } from "../../services/task-group";
+import { findTaskGroup } from "../../services/task-group";
 import { findDOMNode } from "react-dom";
 import { withRouter } from "react-router";
 import { createTask, findTasks, deleteTask } from "../../services/task";
 import { Task } from "../../models/task";
 import TaskGraph from "./TaskGraph";
-import { getPermission, shareTaskGroup } from "../../services/permission";
+import { getPermission } from "../../services/permission";
 import { PermissionState } from "../../models/permission";
 
-interface TaskGroupViewProps {
+interface SharedViewProps {
     groups: TaskGroup[];
     tasks: Task[];
     dispatch: Dispatch<{}>;
     permission: PermissionState;
 }
 
-interface TaskGroupState {
+interface SharedViewState {
     groupId: string;
     name: string;
     description: string;
     createdOn?: Date;
 }
 
-class TaskGroupView extends React.Component<TaskGroupViewProps, TaskGroupState> {
+class SharedView extends React.Component<SharedViewProps, SharedViewState> {
     private groupId: string;
 
     constructor(props, context) {
@@ -68,31 +68,8 @@ class TaskGroupView extends React.Component<TaskGroupViewProps, TaskGroupState> 
         this.handleClose();
     }
 
-    handleEdit() {
-        this.props.dispatch(editTaskGroup(this.state)).then((taskGroup) => {
-            if (taskGroup) {
-                this.setState({
-                    groupId: taskGroup.groupId,
-                    name: taskGroup.name,
-                    description: taskGroup.description,
-                    createdOn: taskGroup.createdOn
-                });
-            }
-            (findDOMNode(this.refs.editCloseBtn) as HTMLButtonElement).click();
-        });
-    }
-
     handleTaskDelete(e) {
         this.props.dispatch(deleteTask(this.groupId, e.target.id));
-    }
-
-    handleShare() {
-        const email: string = (findDOMNode(this.refs.email) as HTMLInputElement).value;
-        this.props.dispatch(shareTaskGroup(email, this.groupId));
-    }
-
-    handleDelete() {
-        this.props.dispatch(deleteTaskGroup(this.groupId));
     }
 
     handleClose() {
@@ -142,9 +119,6 @@ class TaskGroupView extends React.Component<TaskGroupViewProps, TaskGroupState> 
                         <div className="card-body">
                             <h5 className="card-title">Actions</h5>
                             <button type="button" className="list-group-item list-group-item-action list-group-item-primary text-center" data-toggle="modal" data-target="#new-task-group">New Task</button>
-                            <button type="button" className="list-group-item list-group-item-action list-group-item-danger text-center" onClick={this.handleDelete.bind(this)} >Delete Task Group</button>
-                            <button type="button" className="list-group-item list-group-item-action list-group-item-success text-center" data-toggle="modal" data-target="#edit-task-group">Edit Task Group</button>
-                            <button type="button" className="list-group-item list-group-item-action list-group-item-warning text-center" data-toggle="modal" data-target="#share-task-group">Share</button>
                         </div>
                     </div>
                 </div>
@@ -235,96 +209,6 @@ class TaskGroupView extends React.Component<TaskGroupViewProps, TaskGroupState> 
                         </div>
                     </div>
                 </div>
-
-                {/* share task model */}
-                <div className="modal fade" id="share-task-group" role="dialog" aria-labelledby="share-task-group-label" aria-hidden="true">
-                    <div className="modal-dialog" role="document">
-                        <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="share-task-group-label">Share Task Group</h5>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div className="modal-body">
-                            <form>
-                                <div className="form-group">
-                                    <label htmlFor="email">Enter the email address of the user</label>
-                                    <input ref="email"type="text" className="form-control" placeholder="someone@example.com" />
-                                </div>
-                            </form>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" ref="closeBtn" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary" onClick={this.handleShare.bind(this)}>Save</button>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* edit task group model */}
-                <div className="modal fade" id="edit-task-group" role="dialog" aria-labelledby="edit-task-group-label" aria-hidden="true">
-                    <div className="modal-dialog" role="document">
-                        <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="edit-task-group-label">Edit Task Group</h5>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div className="modal-body">
-                            <form>
-                                <div className="form-group">
-                                    <label htmlFor="groupId">Task Group ID</label>
-                                    <input
-                                        ref="editGroupId"
-                                        type="text"
-                                        className="form-control"
-                                        disabled
-                                        value={this.state.groupId}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="name">Name</label>
-                                    <input
-                                        ref="editName"
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Name"
-                                        value={this.state.name}
-                                        onChange={ e => this.setState({
-                                            groupId: this.state.groupId,
-                                            name: e.target.value,
-                                            description: this.state.description,
-                                            createdOn: this.state.createdOn
-                                        })}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="description">Description</label>
-                                    <input
-                                        ref="editDescription"
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Description"
-                                        value={this.state.description}
-                                        onChange={ e => this.setState({
-                                            groupId: this.state.groupId,
-                                            description: e.target.value,
-                                            name: this.state.name,
-                                            createdOn: this.state.createdOn
-                                        })}
-                                    />
-                                </div>
-                            </form>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" ref="editCloseBtn" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary" onClick={this.handleEdit.bind(this)}>Save Changes</button>
-                        </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         );
     }
@@ -338,4 +222,4 @@ const mapStateToProps = (state: any) => {
     };
 };
 
-export default withRouter(connect(mapStateToProps)(TaskGroupView));
+export default withRouter(connect(mapStateToProps)(SharedView));

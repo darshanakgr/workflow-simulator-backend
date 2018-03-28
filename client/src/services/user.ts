@@ -8,8 +8,8 @@ export const signIn = (email: string, password: string) => {
     return (dispatch: Dispatch<{}>) => {
         return new Promise((resolve, reject) => {
             axios.post(`http://localhost:3001/api/signin`, {email, password}).then((res: any) => {
-                dispatch(actions.signIn(res.data));
-                Auth.authenticateUser(res.data);
+                dispatch(actions.currentUser(res.data.userId));
+                Auth.authenticateUser(res.data.token);
                 return resolve();
             }).catch(e => {
                 dispatch(showMessage(true, e.message));
@@ -22,7 +22,7 @@ export const signIn = (email: string, password: string) => {
 export const signUp = (email: string, password: string) => {
     return (dispatch: Dispatch<{}>) => {
         axios.post("http://localhost:3001/api/signup", {email, password}).then((res: any) => {
-            dispatch(actions.signUp());
+            dispatch(actions.clearUser());
             dispatch(showMessage(false, "You've successfully signed up! Please login :)"));
         }).catch(e => dispatch(showMessage(true, e.message)));
     };
@@ -31,14 +31,9 @@ export const signUp = (email: string, password: string) => {
 export const signOut = () => {
     return (dispatch: Dispatch<{}>) => {
         return new Promise((resolve, reject) => {
-            axios.get("http://localhost:3001/api/signout").then((res: any) => {
-            dispatch(actions.signOut());
-                Auth.deauthenticateUser();
-                return resolve();
-            }).catch(e => {
-                dispatch(showMessage(true, e.message));
-                return reject();
-            });
+            Auth.deauthenticateUser();
+            dispatch(actions.clearUser());
+            resolve();
         });
     };
 };
@@ -46,13 +41,18 @@ export const signOut = () => {
 export const currentUser = () => {
     return (dispatch: Dispatch<{}>) => {
         return new Promise((resolve, reject) => {
-            axios.get("http://localhost:3001/api/current_user").then((res: any) => {
-                dispatch(actions.currentUser(res.data));
-                return resolve();
-            }).catch((e) => {
-                dispatch(showMessage(true, e.message));
-                return reject(e);
-            });
+            if (Auth.isUserAuthenticated()) {
+                Auth.initializeHeader();
+                return axios.get("http://localhost:3001/api/current_user").then((res: any) => {
+                    dispatch(actions.currentUser(res.data));
+                    return resolve();
+                }).catch((e) => {
+                    dispatch(actions.clearUser());
+                    return reject(e);
+                });
+            }
+            dispatch(actions.clearUser());
+            return reject();
         });
     };
 };

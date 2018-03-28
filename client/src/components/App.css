@@ -22,7 +22,7 @@
   text-transform: capitalize;
 }
 
-img > .cover{
+img {
   width: 100%;
   height: auto;
 }

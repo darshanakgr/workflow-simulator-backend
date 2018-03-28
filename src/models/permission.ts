@@ -12,7 +12,7 @@ interface IPermission extends mongoose.Document {
     accessLevel: number;
 }
 
-const Permission = mongoose.model<IPermission>("Permission", new mongoose.Schema({
+const permissionSchema = new mongoose.Schema({
     groupId: {
         type: String,
         required: true
@@ -29,7 +29,11 @@ const Permission = mongoose.model<IPermission>("Permission", new mongoose.Schema
         type: Number,
         required: true
     }
-}));
+});
+
+permissionSchema.index({groupId: 1, userId: 1}, { unique: true });
+
+const Permission = mongoose.model<IPermission>("Permission", permissionSchema);
 
 
 export { Permission, IPermission };

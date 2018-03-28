@@ -43,16 +43,19 @@ const removeListener = (groupId: string, socket: SocketIO.Socket) => {
 
 const notifyUpdate = (task: ITask) => {
     return new Promise((resolve, reject) => {
-        TaskController.updateTask(task.groupId, task.taskId, {progress: task.progress}).then((result) => {
-            if (observers[task.groupId] != undefined) {
-                const observer = observers[task.groupId];
-                observer.notifyObserver(undefined, {
-                    timestamp: new Date().getTime(),
-                    state: task
-                });
-                return resolve({modified: result.n, notifiedObservers: Object.keys(observer.sockets)});
+        TaskController.updateTask(task).then((result) => {
+            if (result.n > 0) {
+                if (observers[task.groupId] != undefined) {
+                    const observer = observers[task.groupId];
+                    observer.notifyObserver(undefined, {
+                        timestamp: new Date().getTime(),
+                        state: task
+                    });
+                    return resolve({modified: result.n, notifiedObservers: Object.keys(observer.sockets)});
+                }
+                return resolve({modified: result.n, notifiedObservers: 0});
             }
-            return resolve({modified: result.n, notifiedObservers: 0});
+            return reject("No Task found with that id");
         }).catch((e) => reject(e.message));
     });
 };

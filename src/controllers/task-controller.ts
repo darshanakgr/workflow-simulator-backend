@@ -14,7 +14,7 @@ const createTask = (task: ITask) => {
             taskGroup.childTasks.push(task.taskId);
             return new Task(task).save();
         }).then((result) => {
-            return TaskGroupController.updateTaskGroup(task.groupId, taskGroup);
+            return TaskGroupController.updateTaskGroup(taskGroup);
         }).then((result) => {
             return updateSuccessors(task.taskId, task.predecessors);
         }).then((result) => {
@@ -29,11 +29,11 @@ const updateSuccessors = (taskId: string, successors: Array<string>) => {
     return new Promise((resolve, reject) => {
         const result: Array<object> = [];
         successors.forEach((successor) => {
-            findTask(successor).then((res) => {
-                if (res.length != 0) {
-                   const task: any = res[0];
+            findTask(successor).then((task) => {
+                if (task) {
                    task.successors.push(taskId);
-                   updateTask(task.groupId, task.taskId, task).then((r) => result.push(r));
+                   console.log(task);
+                   updateTask(task).then((r) => result.push(r));
                 }
             }).catch((e) => {
                 return reject(e);
@@ -43,12 +43,56 @@ const updateSuccessors = (taskId: string, successors: Array<string>) => {
     });
 };
 
-const updateTask = (groupId: string, taskId: string, task: any) => {
-    return Task.update({taskId, groupId}, {
+const deleteSuccessors = (taskId: string, predecessors: Array<string>) => {
+    return new Promise((resolve, reject) => {
+        const result: Array<object> = [];
+        predecessors.forEach((predecessor) => {
+            findTask(predecessor).then((task) => {
+                if (task) {
+                   task.successors = task.successors.filter(successor => successor != taskId);
+                   updateTask(task).then((r) => result.push(r));
+                }
+            }).catch((e) => {
+                return reject(e);
+            });
+        });
+        return resolve(result);
+    });
+};
+
+const updateTask = (task: ITask) => {
+    return Task.update({
+        taskId: task.taskId,
+        groupId: task.groupId
+    }, {
         $set: task
     }, {
         new: true
     });
+};
+
+const deleteTask = (groupId: string, taskId: string) => {
+    return new Promise((resolve, reject) => {
+        findTask(taskId).then((task) => {
+            if (!task) {
+                return reject(new Error("No Task exists for that id"));
+            }
+            return deleteSuccessors(task.taskId, task.predecessors);
+        }).then((result) => {
+            return Task.deleteOne({taskId, groupId});
+        }).then((result) => {
+            return TaskGroupController.deleteTask(groupId, taskId);
+        }).then((result) => {
+            return resolve(result);
+        }).catch((e) => {
+            console.log(e);
+            return reject(e);
+        });
+    });
+};
+
+const deleteAllTasks = (groupId: string) => {
+    return Task.deleteMany({groupId});
 };
 
 const getAllTasks = () => {
@@ -56,11 +100,11 @@ const getAllTasks = () => {
 };
 
 const findTask = (taskId: string) => {
-    return Task.find({taskId});
+    return Task.findOne({taskId});
 };
 
 const findTasksByGroup = (groupId: string) => {
     return Task.find({groupId});
 };
 
-export default { createTask, getAllTasks, updateTask, findTask, findTasksByGroup };
+export default { createTask, getAllTasks, updateTask, findTask, findTasksByGroup, deleteTask, deleteAllTasks };

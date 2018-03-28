@@ -12,9 +12,9 @@ export const createNewTaskGroup = (taskgroup) => {
     };
 };
 
-export const getAllTaskGroups = (userId: string) => {
+export const getAllTaskGroups = () => {
     return (dispatch: Dispatch<{}>) => {
-        axios.get(`http://localhost:3001/api/taskgroup/${userId}`).then((res) => {
+        axios.get(`http://localhost:3001/api/taskgroup/`).then((res) => {
             dispatch(actions.getTaskGroups(res.data as TaskGroup[]));
         }).catch(e => dispatch(showMessage(true, e.message)));
     };
@@ -22,8 +22,40 @@ export const getAllTaskGroups = (userId: string) => {
 
 export const findTaskGroup = (groupId: string) => {
     return (dispatch: Dispatch<{}>) => {
-        axios.get(`http://localhost:3001/api/taskgroup/find/${groupId}`).then((res) => {
-            dispatch(actions.findTaskGroup(res.data as TaskGroup));
+        return new Promise<TaskGroup>((resolve, reject) => {
+            axios.get(`http://localhost:3001/api/taskgroup/find/${groupId}`).then((res) => {
+                dispatch(actions.findTaskGroup(res.data as TaskGroup));
+                resolve(res.data);
+            }).catch(e => dispatch(showMessage(true, e.message)));
+        });
+    };
+};
+
+export const deleteTaskGroup = (groupId: string) => {
+    return (dispatch: Dispatch<{}>) => {
+        axios.delete(`http://localhost:3001/api/taskgroup/${groupId}`).then((res) => {
+            dispatch(showMessage(false, "Task Group Deleted Successfully!"));
+            dispatch(getAllTaskGroups());
         }).catch(e => dispatch(showMessage(true, e.message)));
     };
 };
+
+export const editTaskGroup = (taskgroup) => {
+    return (dispatch: Dispatch<{}>) => {
+        return new Promise<TaskGroup>((resolve, reject) => {
+            axios.put(`http://localhost:3001/api/taskgroup/`, taskgroup).then((res) => {
+            dispatch(showMessage(false, "Task Group Updated Successfully!"));
+            resolve(taskgroup);
+        }).catch(e => dispatch(showMessage(true, e.message)));
+        });
+    };
+};
+
+export const getAllSharedTaskGroups = () => {
+    return (dispatch: Dispatch<{}>) => {
+        axios.get(`http://localhost:3001/api/taskgroup/shared`).then((res) => {
+            dispatch(actions.getTaskGroups(res.data as TaskGroup[]));
+        }).catch(e => dispatch(showMessage(true, e.message)));
+    };
+};
+

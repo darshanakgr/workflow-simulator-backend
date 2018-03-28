@@ -29,15 +29,15 @@ router.get("/:groupId", (req, res) => {
 
 router.post("/", (req, res) => {
     TaskController.createTask(req.body).then((result) => {
-        res.send(result);
+        res.status(200).send(result);
     }).catch((e) => {
-        res.status(400).send(e.message);
+        res.status(400).send(e);
     });
 });
 
-router.patch("/:groupId/:taskId", (req, res) => {
-    TaskController.updateTask(req.params.groupId, req.params.taskId, req.body).then((result) => {
-        res.send(result);
+router.delete("/:groupId/:taskId", (req, res) => {
+    TaskController.deleteTask(req.params.groupId, req.params.taskId).then((result) => {
+        res.status(200).send(result);
     }).catch((e) => {
         res.status(400).send(e);
     });

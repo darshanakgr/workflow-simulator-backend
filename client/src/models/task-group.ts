@@ -5,6 +5,7 @@ export type TaskGroup = {
     createdOn: Date;
     progress: number;
     childTasks: Array<string>;
+    createdBy?: string;
 };
 
 export type TaskGroupState = {

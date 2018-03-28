@@ -17,8 +17,10 @@ interface ITaskGroup extends mongoose.Document {
 const TaskGroup = mongoose.model<ITaskGroup>("TaskGroup", new mongoose.Schema({
     groupId: {
         type: String,
-        unique: true,
-        required: true
+        required: true,
+        index: {
+            unique: true
+        }
     },
     name: String,
     description: String,

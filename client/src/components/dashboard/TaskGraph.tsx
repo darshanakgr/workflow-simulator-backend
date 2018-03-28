@@ -36,7 +36,6 @@ class TaskGraph extends React.Component<TaskGraphProps> {
         const options = {
             height: "100%",
             width: "100%",
-            tooltip: true,
             layout: {
                 hierarchical: {
                     enabled: false,

@@ -1,8 +1,7 @@
 export type User = {
-    userId: string;
+    userId?: string;
 };
 
 export type UserState = {
     user?: User;
-    status: boolean;
 };

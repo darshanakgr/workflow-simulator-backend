@@ -1,12 +1,15 @@
 import * as React from "react";
 import { findDOMNode } from "react-dom";
 import { connect, Dispatch } from "react-redux";
-import { createNewTaskGroup, getAllTaskGroups } from "../../services/task-group";
+import { createNewTaskGroup, getAllTaskGroups, deleteTaskGroup } from "../../services/task-group";
 import { TaskGroupState } from "../../models/task-group";
 import { browserHistory } from "react-router";
 import { User } from "../../models/user";
 import { withRouter } from "react-router";
-import Auth from "../../services/auth";
+// import { currentUser } from "../../services/user";
+// import { PermissionState } from "../../models/permission";
+// import { getPermission } from "../../services/permission";
+// import Auth from "../../services/auth";
 
 
 interface TaskGroupProps {
@@ -20,16 +23,14 @@ class TaskGroup extends React.Component<TaskGroupProps> {
     constructor(props, context) {
         super(props, context);
         this.handleClose = this.handleClose.bind(this);
-        if (Auth.isUserAuthenticated()) {
-            this.props.dispatch(getAllTaskGroups(Auth.getUserId() || ""));
-        }
+        this.props.dispatch(getAllTaskGroups());
     }
 
     handleSave() {
         const groupId: string = (findDOMNode(this.refs.groupId) as HTMLInputElement).value;
         const name: string = (findDOMNode(this.refs.name) as HTMLInputElement).value;
         const description: string = (findDOMNode(this.refs.description) as HTMLInputElement).value;
-        this.props.dispatch(createNewTaskGroup({groupId, name, description, createdBy: this.props.user.userId}));
+        this.props.dispatch(createNewTaskGroup({groupId, name, description}));
         this.handleClose();
     }
 
@@ -44,6 +45,12 @@ class TaskGroup extends React.Component<TaskGroupProps> {
         browserHistory.push(`/dashboard/taskgroup/${e.target.id}`);
     }
 
+    handleDelete(e) {
+        if (confirm("Are your sure ?")) {
+            this.props.dispatch(deleteTaskGroup(e.target.id));
+        }
+    }
+
     render () {
         const taskgroups = this.props.groups.groups.map((g) => {
             return (
@@ -53,14 +60,14 @@ class TaskGroup extends React.Component<TaskGroupProps> {
                     <td>{g.description}</td>
                     <td>{new Date(g.createdOn).toLocaleDateString()}</td>
                     <td><button className="btn btn-sm btn-success" onClick={this.handleView.bind(this)} id={g.groupId}>View</button></td>
-                    <td><button className="btn btn-sm btn-danger">Delete</button></td>
+                    <td><button className="btn btn-sm btn-danger" onClick={this.handleDelete.bind(this)} id={g.groupId}>Delete</button></td>
                 </tr>
             );
         });
         return (
             <div>
                 <button type="button" className="btn btn-outline-primary" data-toggle="modal" data-target="#new-task-group">
-                New Task Group
+                    New Task Group
                 </button>
 
                 <table className="table mt-5">
@@ -119,7 +126,7 @@ class TaskGroup extends React.Component<TaskGroupProps> {
 const mapStateToProps = (state: any) => {
     return {
         groups: state.group,
-        user: state.user.user
+        user: state.user
     };
 };
 

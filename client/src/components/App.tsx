@@ -12,25 +12,15 @@ import Home from "./default/Home";
 import Main from "./default/Main";
 import SignIn from "./default/SignIn";
 import SignUp from "./default/SignUp";
-import Auth from "../services/auth";
+// import Auth from "../services/auth";
+import SignOut from "./default/SignOut";
+import Shared from "./dashboard/Shared";
+import SharedView from "./dashboard/SharedView";
+import Notification from "./dashboard/Notification";
 
-interface AppState {
-  isUserAuthenticated: boolean;
-}
-
-class App extends React.Component<{}, AppState> {
+class App extends React.Component {
   constructor(props: any) {
     super(props);
-    this.state = {
-        isUserAuthenticated: false
-    };
-    this.toggleAuthentication = this.toggleAuthentication.bind(this);
-  }
-
-  toggleAuthentication() {
-    this.setState({
-        isUserAuthenticated: Auth.isUserAuthenticated()
-    });
   }
 
   render() {
@@ -46,8 +36,12 @@ class App extends React.Component<{}, AppState> {
                   <IndexRoute component={TaskGroup} />
                   <Route path="/dashboard/taskgroup/:groupId" component={TaskGroupView} />
                   <Route path="/dashboard/search" component={Search} />
+                  <Route path="/dashboard/shared" component={Shared} />
+                  <Route path="/dashboard/shared/:groupId" component={SharedView} />
+                  <Route path="/dashboard/notification" component={Notification} />
                 </Route>
             </Route>
+            <Route path="/signout" component={SignOut} />
         </Router>
       </div>
     );
