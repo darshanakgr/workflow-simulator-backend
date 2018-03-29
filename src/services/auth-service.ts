@@ -29,32 +29,10 @@ const init = (app: Express) => {
         }).catch((e) => done(e));
     }));
 
-    // passport.deserializeUser((id, done) => {
-    //     User.findById(id).then((user) => {
-    //         done(undefined, user);
-    //     });
-    // });
-
-    // passport.serializeUser((user: any, done) => {
-    //     done(undefined, user.id);
-    // });
-
-    // app.use(session({
-    //     secret: "simulator",
-    //     resave: true,
-    //     store: new MongoStore({
-    //         mongooseConnection: mongoose.connection,
-    //         autoRemove: "interval",
-    //         autoRemoveInterval: 10
-    //     }),
-    //     saveUninitialized: false
-    // }));
-
     app.use(passport.initialize());
-    // app.use(passport.session());
 
     app.use((req, res, next) => {
-        if (["/api/signin", "/api/signup"].indexOf(req.url) != -1) {
+        if (["/api/signin", "/api/signup", "/signin", "/signup", "/docs", "/"].indexOf(req.url) != -1) {
             return next();
         }
         if (req.headers.authorization) {
