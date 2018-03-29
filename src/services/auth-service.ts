@@ -32,6 +32,7 @@ const init = (app: Express) => {
     app.use(passport.initialize());
 
     app.use((req, res, next) => {
+        console.log(req.url);
         if (["/api/signin", "/api/signup", "/signin", "/signup", "/docs", "/"].indexOf(req.url) != -1) {
             return next();
         }
