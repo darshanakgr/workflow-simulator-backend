@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const passport_1 = __importDefault(require("passport"));
 const user_controller_1 = __importDefault(require("../controllers/user-controller"));
+const auth_service_1 = require("../services/auth-service");
 const router = express_1.default.Router();
 router.post("/signin", (req, res, next) => {
     passport_1.default.authenticate("local", {
@@ -20,7 +21,7 @@ router.post("/signin", (req, res, next) => {
         return res.status(200).send(token);
     })(req, res, next);
 });
-router.get("/current_user", (req, res) => {
+router.get("/current_user", auth_service_1.authenticate, (req, res) => {
     res.send(req.user);
 });
 router.post("/signup", (req, res) => {

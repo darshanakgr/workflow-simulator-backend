@@ -8,10 +8,11 @@ const task_group_routes_1 = __importDefault(require("./task-group-routes"));
 const task_routes_1 = __importDefault(require("./task-routes"));
 const auth_routes_1 = __importDefault(require("./auth-routes"));
 const notification_routes_1 = __importDefault(require("./notification-routes"));
+const auth_service_1 = require("../services/auth-service");
 const router = express_1.default.Router();
-router.use("/api/taskgroup", task_group_routes_1.default);
-router.use("/api/task", task_routes_1.default);
-router.use("/api/notification", notification_routes_1.default);
+router.use("/api/taskgroup", auth_service_1.authenticate, task_group_routes_1.default);
+router.use("/api/task", auth_service_1.authenticate, task_routes_1.default);
+router.use("/api/notification", auth_service_1.authenticate, notification_routes_1.default);
 router.use("/api", auth_routes_1.default);
 exports.default = router;
 //# sourceMappingURL=index.js.map

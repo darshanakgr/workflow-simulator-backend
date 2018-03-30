@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import http from "http";
 import path from "path";
 import router from "./routes";
-import authService from "./services/auth-service";
+import { init } from "./services/auth-service";
 import socketHandler from "./controllers/socket-controller";
 import cors from "cors";
 
@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
 app.use(cors());
 
-authService.init(app);
+init(app);
 
 app.use("/", router);
 

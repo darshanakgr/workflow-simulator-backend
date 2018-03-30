@@ -3,6 +3,7 @@ import passport from "passport";
 import { User } from "../models/user";
 import UserController from "../controllers/user-controller";
 import jwt from "jsonwebtoken";
+import { authenticate } from "../services/auth-service";
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ router.post("/signin", (req, res, next) => {
     })(req, res, next);
 });
 
-router.get("/current_user", (req, res) => {
+router.get("/current_user", authenticate, (req, res) => {
     res.send(req.user);
 });
 
