@@ -1,3 +1,7 @@
+/**
+ * A module that generate secret keys for authentication
+ */
+
 import SHA256 from "crypto-js/sha256";
 
 const generateKey = (userId: string, groupId: string) => {

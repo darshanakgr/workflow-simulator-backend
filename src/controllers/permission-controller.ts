@@ -9,6 +9,12 @@ import { VIEW_ONLY, FULL_ACCESS } from "../types";
 import redis from "../db/redis";
 import { User } from "../models/user";
 
+/**
+ * Create new secret key for a task-group and a user
+ * @param {string} userId - id of the user
+ * @param {string} groupId - id of the task-group
+ * @param {number} accessLevel - access level
+ */
 const generatePermission = (userId: string, groupId: string, accessLevel: number) => {
     return new Permission({
         userId: userId,
@@ -18,10 +24,21 @@ const generatePermission = (userId: string, groupId: string, accessLevel: number
     }).save();
 };
 
+/**
+ * Retrieve the secret key from the db
+ * @param {string} userId - id of the user
+ * @param {string} groupId - id of the task-group
+ */
 const getSecretKeys = (userId: string, groupId: string) => {
     return Permission.findOne({userId, groupId});
 };
 
+/**
+ * Authentication of a client
+ * @param {string} secretKey - secret key
+ * @param {string} groupId - id of the task-group
+ * @param {number} requiredAccessLevel - access level
+ */
 const authenticate = (secretKey: string, groupId: string, requiredAccessLevel: number) => {
     return new Promise<boolean>((resolve, reject) => {
         redis.hget(secretKey, groupId, (err, accessLevel) => {
@@ -45,6 +62,11 @@ const authenticate = (secretKey: string, groupId: string, requiredAccessLevel: n
     });
 };
 
+/**
+ * Share a task-group with a user
+ * @param {string} email - email address
+ * @param {string} groupId - id of the task-group
+ */
 const shareGroup = (email: string, groupId: string ) => {
     return new Promise((resolve, reject) => {
         User.findOne({email}).then((user) => {
@@ -56,6 +78,10 @@ const shareGroup = (email: string, groupId: string ) => {
     });
 };
 
+/**
+ * Get all group ids which can be accessed by a user
+ * @param {string} userId - id of the user
+ */
 const getGroupIds = (userId: string) => {
     return new Promise((resolve, reject) => {
         Permission.find({userId}).then((permissions) => {
@@ -63,7 +89,5 @@ const getGroupIds = (userId: string) => {
         }).catch((e) => reject(e));
     });
 };
-
-
 
 export default { generatePermission, authenticate, getSecretKeys, shareGroup, getGroupIds };

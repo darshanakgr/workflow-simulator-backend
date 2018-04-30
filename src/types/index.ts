@@ -1,3 +1,7 @@
+/**
+ * Contains all the types required in this project
+ */
+
 export const FULL_ACCESS: number = 0;
 export const VIEW_ONLY: number = 1;
 

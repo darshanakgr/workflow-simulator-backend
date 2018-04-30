@@ -1,3 +1,7 @@
+/**
+ * A module that contained all the http route handlers for notification
+ */
+
 import express from "express";
 import NotificationController from "../controllers/notification-controller";
 const router = express.Router();

@@ -1,14 +1,15 @@
 "use strict";
+/**
+ * A module that contained all functionalities for authentication
+ */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 const passport_1 = __importDefault(require("passport"));
-// import connectMongo from "connect-mongo";
 const passport_local_1 = require("passport-local");
 const user_1 = require("../models/user");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-// const MongoStore = connectMongo(session);
 exports.init = (app) => {
     passport_1.default.use(new passport_local_1.Strategy({
         usernameField: "email",

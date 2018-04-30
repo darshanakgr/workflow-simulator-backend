@@ -1,3 +1,7 @@
+/**
+ * A module that exports a class for Observer.
+ */
+
 import { WSError, WSMessage } from "../types";
 
 class TaskGroupObserver {

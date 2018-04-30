@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Row, Col, Button, ControlLabel, FormControl, FormGroup } from "react-bootstrap";
 import * as ReactDOM from "react-dom";
 import { Dispatch, connect } from "react-redux";
 import { signUp } from "../../services/user";
@@ -12,53 +11,46 @@ interface SignUpProps {
 }
 
 class SignUp extends React.Component<SignUpProps> {
-    handleSignUp () {
+    handleSignUpI () {
         const email: string = (ReactDOM.findDOMNode(this.refs.email) as HTMLInputElement).value;
         const password: string = (ReactDOM.findDOMNode(this.refs.password) as HTMLInputElement).value;
         this.props.dispatch(signUp(email, password));
     }
+    handleSignUp (e: React.FormEvent<HTMLElement>) {
+        e.preventDefault();
+        const loginForm = ReactDOM.findDOMNode(this.refs.loginForm) as HTMLFormElement;
+        if (loginForm.checkValidity()) {
+            const email: string = (ReactDOM.findDOMNode(this.refs.email) as HTMLInputElement).value;
+            const password: string = (ReactDOM.findDOMNode(this.refs.password) as HTMLInputElement).value;
+            this.props.dispatch(signUp(email, password));
+        }
+    }
 
     render() {
         return (
-            <div className="container main">
-                <Alert />
-                <form>
-                    <Row>
-                        <Col md={4}>
-                            <FormGroup>
-                                <ControlLabel>Email</ControlLabel>
-                                <FormControl
-                                    type="email"
-                                    placeholder="someone@example.com"
-                                    ref="email"
-                                />
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md={4}>
-                            <FormGroup>
-                                <ControlLabel>Password</ControlLabel>
-                                <FormControl
-                                    type="password"
-                                    placeholder="password"
-                                    ref="password"
-                                />
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md={4}>
-                            <FormGroup>
-                                <Button bsStyle="primary" onClick={this.handleSignUp.bind(this)}>Sign up</Button>
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                </form>
+            <div>
+                <div className="main login-container">
+                    <div className="login">
+                        <h2 style={{color: "#ecf0f1"}}>Sign Up</h2>
+                        <Alert />
+                        <form ref="loginForm" onSubmit={this.handleSignUp.bind(this)}>
+                            <div className="form-group">
+                                {/* <label htmlFor="groupId">Email</label> */}
+                                <input ref="email" type="email" className="login-input" placeholder="someones@example.com" required/>
+                            </div>
+                            <div className="form-group">
+                                {/* <label htmlFor="name">Password</label> */}
+                                <input ref="password" type="password" className="login-input" placeholder="password" required/>
+                            </div>
+                            <input type="submit" className="btn btn-primary" value="Sign Up" />
+                        </form>
+                    </div>
+                </div>
             </div>
         );
     }
 }
+
 
 const mapStateToProps = (state: any) => {
     return {};

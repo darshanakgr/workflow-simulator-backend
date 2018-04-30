@@ -1,4 +1,7 @@
 "use strict";
+/**
+ * A module that contained all the http route handlers for authentication
+ */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 }

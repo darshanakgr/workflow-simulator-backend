@@ -53,6 +53,10 @@ const getAllTasks = () => {
 const findTaskGroup = (groupId) => {
     return task_group_1.TaskGroup.findOne({ groupId });
 };
+/**
+ * Find all the task groups for provided user id
+ * @param {string} userId - id of the user
+ */
 const findTaskGroupByUserId = (userId) => {
     return task_group_1.TaskGroup.find({ createdBy: userId });
 };
@@ -76,6 +80,10 @@ const deleteTaskGroup = (groupId, createdBy) => {
         }).catch(e => reject(e));
     });
 };
+/**
+ * Find whether there is a task group for provided id
+ * @param {string} groupId -id of the task-group
+ */
 const isExist = (groupId) => {
     return new Promise((resolve, reject) => {
         task_group_1.TaskGroup.findOne({ groupId }).then((taskGroup) => {
@@ -86,6 +94,11 @@ const isExist = (groupId) => {
         }).catch(e => reject(e));
     });
 };
+/**
+ * Delete the subroutine with provided ids
+ * @param {string} groupId - id of the task-group
+ * @param {string} taskId - id of the subroutine
+ */
 const deleteTask = (groupId, taskId) => {
     return new Promise((resolve, reject) => {
         task_group_1.TaskGroup.findOne({ groupId }).then((taskGroup) => {
@@ -99,6 +112,10 @@ const deleteTask = (groupId, taskId) => {
         }).catch(e => reject(e));
     });
 };
+/**
+ * Find the shared task with a particular user
+ * @param {string} userId - user id
+ */
 const findTaskGroupShared = (userId) => {
     return new Promise((resolve, reject) => {
         permission_1.Permission.find({ userId }).then((permissions) => {

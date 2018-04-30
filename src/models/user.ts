@@ -1,3 +1,7 @@
+/**
+ * A module that exports a schema to User.
+ */
+
 import mongoose from "mongoose";
 import bycrypt from "bcrypt-nodejs";
 

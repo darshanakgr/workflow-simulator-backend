@@ -1,3 +1,7 @@
+/**
+ * A module that contained all the http route handlers for authentication
+ */
+
 import express from "express";
 import passport from "passport";
 import { User } from "../models/user";

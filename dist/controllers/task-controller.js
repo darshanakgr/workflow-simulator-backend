@@ -1,10 +1,18 @@
 "use strict";
+/**
+ * A module, contains all the functions of handling task-subroutines
+ * Uses the schema of Task
+ */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 const task_1 = require("../models/task");
 const task_group_controller_1 = __importDefault(require("./task-group-controller"));
+/**
+ * Create a new record for provided subroutine
+ * @param {ITask} task - an object of the task-subroutine
+ */
 const createTask = (task) => {
     return new Promise((resolve, reject) => {
         let taskGroup;
@@ -26,6 +34,11 @@ const createTask = (task) => {
         });
     });
 };
+/**
+ * Update the successor's parent array
+ * @param {string} taskId - id of the subroutine
+ * @param {Array<string>} successors - ids of the successor subroutines
+ */
 const updateSuccessors = (taskId, successors) => {
     return new Promise((resolve, reject) => {
         const result = [];
@@ -43,6 +56,11 @@ const updateSuccessors = (taskId, successors) => {
         return resolve(result);
     });
 };
+/**
+ * Delete all the successor's reference of a task
+ * @param {string} taskId - id of the task-subroutine
+ * @param predecessors - ids of the predecessors subroutines
+ */
 const deleteSuccessors = (taskId, predecessors) => {
     return new Promise((resolve, reject) => {
         const result = [];
@@ -59,6 +77,10 @@ const deleteSuccessors = (taskId, predecessors) => {
         return resolve(result);
     });
 };
+/**
+ * Update the record of a particular task-subroutine
+ * @param task - task-subroutine object
+ */
 const updateTask = (task) => {
     return task_1.Task.update({
         taskId: task.taskId,
@@ -69,6 +91,11 @@ const updateTask = (task) => {
         new: true
     });
 };
+/**
+ * Delete the record of a task-subroutine
+ * @param {string} groupId - id of the task-group
+ * @param {string} taskId - id of the task-subroutine
+ */
 const deleteTask = (groupId, taskId) => {
     return new Promise((resolve, reject) => {
         findTask(taskId).then((task) => {
@@ -88,15 +115,30 @@ const deleteTask = (groupId, taskId) => {
         });
     });
 };
+/**
+ * Delete all task-subroutines belongs to a task-group
+ * @param {string} groupId - id of the task-group
+ */
 const deleteAllTasks = (groupId) => {
     return task_1.Task.deleteMany({ groupId });
 };
+/**
+ * Get all the task-subroutines
+ */
 const getAllTasks = () => {
     return task_1.Task.find({});
 };
+/**
+ * Find a task-subroutine
+ * @param {string} taskId - id of the task-subroutine
+ */
 const findTask = (taskId) => {
     return task_1.Task.findOne({ taskId });
 };
+/**
+ * Find all the task-subroutines belongs to a task-group
+ * @param {string} groupId - id of the task-group
+ */
 const findTasksByGroup = (groupId) => {
     return task_1.Task.find({ groupId });
 };

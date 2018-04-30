@@ -1,6 +1,5 @@
 /**
- * Contains all the routes that uses the controller of task-group.
- * Uses express router.
+ * A module that contained all the http route handlers for Task-groups
  */
 
 import express from "express";

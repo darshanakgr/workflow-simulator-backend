@@ -1,6 +1,6 @@
 "use strict";
 /**
- * A module that exports a schema to Permission.
+ * A module that exports a schema to Notification.
  */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };

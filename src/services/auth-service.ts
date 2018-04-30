@@ -1,13 +1,13 @@
+/**
+ * A module that contained all functionalities for authentication
+ */
+
 import passport from "passport";
-// import session from "express-session";
 import { mongoose } from "../db/db-connection";
-// import connectMongo from "connect-mongo";
 import { Strategy as LocalStrategy } from "passport-local";
 import { User } from "../models/user";
 import { Express, Request, NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
-
-// const MongoStore = connectMongo(session);
 
 export const init = (app: Express) => {
     passport.use(new LocalStrategy({

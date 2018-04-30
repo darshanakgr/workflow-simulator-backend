@@ -1,9 +1,16 @@
 "use strict";
+/**
+ * Initialize the connection with the Redis.io.
+ * Export the object of redis-client after success initialization.
+ */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 const redis_1 = __importDefault(require("redis"));
+/**
+ * This function will use an URI to internet redis database.
+ */
 const client = redis_1.default.createClient({
     host: "ec2-34-193-123-212.compute-1.amazonaws.com",
     url: "redis://h:pd2c7acb80d6c99a31285b71a698ab86867df7eba0b55d3dd3c3d283663c5df44@ec2-34-193-123-212.compute-1.amazonaws.com:21179",

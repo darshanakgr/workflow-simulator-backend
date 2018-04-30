@@ -1,4 +1,7 @@
 "use strict";
+/**
+ * A module that exports a class for Observer.
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 class TaskGroupObserver {
     constructor(groupId) {

@@ -6,7 +6,7 @@ import { findTaskGroup } from "./task-group";
 
 export const createTask = (task) => {
     return (dispatch: Dispatch<{}>) => {
-        axios.post("/api/task", task).then((res) => {
+        axios.post("http://localhost:3001/api/task", task).then((res) => {
             dispatch(actions.createTask(res.data));
             dispatch(findTaskGroup(task.groupId));
         }).catch((e) => dispatch(showMessage(true, e.message)));
@@ -15,7 +15,7 @@ export const createTask = (task) => {
 
 export const findTasks = (groupId: string) => {
     return (dispatch: Dispatch<{}>) => {
-        axios.get(`/api/task/${groupId}`).then((res) => {
+        axios.get(`http://localhost:3001/api/task/${groupId}`).then((res) => {
             dispatch(actions.findTasks(res.data));
         }).catch((e) => dispatch(showMessage(true, e.message)));
     };
@@ -23,7 +23,7 @@ export const findTasks = (groupId: string) => {
 
 export const deleteTask = (groupId: string, taskId: string) => {
     return (dispatch: Dispatch<{}>) => {
-        axios.delete(`/api/task/${groupId}/${taskId}`).then((res) => {
+        axios.delete(`http://localhost:3001/api/task/${groupId}/${taskId}`).then((res) => {
             dispatch(findTasks(groupId));
             dispatch(findTaskGroup(groupId));
             dispatch(showMessage(false, "Task Deleted Successfully"));

@@ -1,3 +1,8 @@
+/**
+ * A module, contains all the functions of handling web-sockets
+ * Uses the socket.io
+ */
+
 import TaskController from "./task-controller";
 import TaskGroupController from "./task-group-controller";
 import ObserverController from "./observer-controller";
@@ -5,6 +10,13 @@ import { ITask } from "../models/task";
 import PermissionController from "./permission-controller";
 import { FULL_ACCESS, WSError, VIEW_ONLY } from "../types";
 
+
+/**
+ * Manage all the functions with a live socket with the client
+ * Uses redis to maximize the performance of database accessing
+ * Each action needs to be authenticated before executing
+ * @param {SocketIO.Socket} socket - socket object
+ */
 const socketHandler = (socket: SocketIO.Socket) => {
     console.log(`Connection Created ${socket.id}`);
 
@@ -12,6 +24,9 @@ const socketHandler = (socket: SocketIO.Socket) => {
         console.log("Connection terminated");
     });
 
+    /**
+     * Create a task-subroutine
+     */
     socket.on("createTask", (task, key, callback) => {
         if (task.taskId && task.groupId && key) {
             PermissionController.authenticate(key, task.groupId, FULL_ACCESS).then((authenticated) => {
@@ -29,6 +44,9 @@ const socketHandler = (socket: SocketIO.Socket) => {
         }
     });
 
+    /**
+     * Add new observer to a client
+     */
     socket.on("addListener", (groupId, key, callback) => {
         if (groupId && key) {
             PermissionController.authenticate(key, groupId, FULL_ACCESS).then((authenticated) => {
@@ -46,6 +64,9 @@ const socketHandler = (socket: SocketIO.Socket) => {
         }
     });
 
+    /**
+     * Update the state of a task-subroutine
+     */
     socket.on("updateProgress", (task, key, callback) => {
         if (task.taskId && task.groupId && key) {
             PermissionController.authenticate(key, task.groupId, FULL_ACCESS).then((authenticated) => {
@@ -63,6 +84,9 @@ const socketHandler = (socket: SocketIO.Socket) => {
         }
     });
 
+    /**
+     * Notify error messages to clients/observers
+     */
     socket.on("notifyError", (error: WSError, key: string, callback: Function) => {
         if (error.groupId && key) {
             PermissionController.authenticate(key, error.groupId, FULL_ACCESS).then((authenticated) => {
@@ -80,6 +104,9 @@ const socketHandler = (socket: SocketIO.Socket) => {
         }
     });
 
+    /**
+     * Calls when the connection is initialized
+     */
     socket.on("authenticate", (key: string, groupId: string, callback: Function) => {
         if (groupId && key) {
             PermissionController.authenticate(key, groupId, FULL_ACCESS).then((authenticated) => {

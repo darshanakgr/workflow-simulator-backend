@@ -1,5 +1,5 @@
 /**
- * A module that exports a schema to Permission.
+ * A module that exports a schema to Notification.
  */
 
 import mongoose from "mongoose";

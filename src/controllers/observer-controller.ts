@@ -1,11 +1,23 @@
+/**
+ * A module, contains all the functions of handling clients/observers
+ */
+
 import TaskGroupController from "./task-group-controller";
 import TaskController from "./task-controller";
 import { TaskGroupObserver } from "../observer/task-group-observer";
 import { ITask } from "../models/task";
 import { WSError } from "../types";
 
+/**
+ * Live connections with the clients
+ */
 const observers: {[groupId: string]: TaskGroupObserver} = {};
 
+/**
+ * Add a listener from a clinet
+ * @param {string} groupId - id of the task-group
+ * @param {SocketIO.Socket} socket - socket
+ */
 const addListener = (groupId: string, socket: SocketIO.Socket) => {
     return new Promise((resolve, reject) => {
         if (observers[groupId] == undefined) {
@@ -26,6 +38,11 @@ const addListener = (groupId: string, socket: SocketIO.Socket) => {
     });
 };
 
+/**
+ * When the connection is dead it will be removed from the clients-collection
+ * @param {string} groupId - id of the task-group
+ * @param {SocketIO.Socket} socket - socket
+ */
 const removeListener = (groupId: string, socket: SocketIO.Socket) => {
     return new Promise((resolve, reject) => {
         if (observers[groupId] == undefined) {
@@ -41,6 +58,10 @@ const removeListener = (groupId: string, socket: SocketIO.Socket) => {
     });
 };
 
+/**
+ * When a state change occurred clients will be notified
+ * @param {ITask} task - task-subroutine object
+ */
 const notifyUpdate = (task: ITask) => {
     return new Promise((resolve, reject) => {
         TaskController.updateTask(task).then((result) => {
@@ -60,6 +81,10 @@ const notifyUpdate = (task: ITask) => {
     });
 };
 
+/**
+ * When an error occurred all the clients will be notified
+ * @param {WSError} error - error object
+ */
 const notifyError = (error: WSError) => {
     return new Promise((resolve, reject) => {
         if (observers[error.groupId] != undefined) {
