@@ -95,3 +95,20 @@ p {
   background-image: url('./img/background.png');
   background-repeat:repeat;
 }
+
+.dialog-title {
+  font-family: 'Open Sans', sans-serif;
+  text-transform: uppercase;
+  color: white;
+  margin: 0;
+}
+
+.dialog-body > p {
+  font-family: 'Open Sans', sans-serif;
+  text-align: left;
+  color: white;
+}
+
+.dialog-footer {
+  text-align: right;
+}

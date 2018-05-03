@@ -1,17 +1,10 @@
 import * as React from "react";
 import "./Sidebar.css";
 
-interface NavbarState {
-    username: string;
-}
-
-class NavBar extends React.Component<{}, NavbarState> {
+class NavBar extends React.Component {
 
     constructor(props: any) {
         super(props);
-        this.state = {
-            username: "Darshana"
-        };
     }
 
     render() {
@@ -23,31 +16,31 @@ class NavBar extends React.Component<{}, NavbarState> {
                             <ul className="nav flex-column">
                             <li className="nav-item">
                                 <a className="nav-link" href="/dashboard">
-                                <span data-feather="home" />
+                                <span data-feather="package" />
                                 Task Group
                                 </a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="/dashboard/search">
-                                <span data-feather="file" />
+                                <span data-feather="search" />
                                 Search
                                 </a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="/dashboard/shared">
-                                <span data-feather="file" />
+                                <span data-feather="share-2" />
                                 Shared With Me
                                 </a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="/dashboard/notification">
-                                <span data-feather="file" />
+                                <span data-feather="bell" />
                                 Notification
                                 </a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="/dashboard/settings">
-                                <span data-feather="file" />
+                                <span data-feather="settings" />
                                 Settings
                                 </a>
                             </li>

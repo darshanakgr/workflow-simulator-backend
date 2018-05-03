@@ -1,9 +1,9 @@
 export type Message = {
     error: boolean;
     message: string;
-    show?: boolean;
+    show: boolean;
 };
 
 export type AlertState = {
-    message?: Message;
+    message: Message;
 };

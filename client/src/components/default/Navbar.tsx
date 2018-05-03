@@ -13,9 +13,6 @@ class NavBar extends React.Component<NavbarProps> {
 
     constructor(props, context) {
         super(props, context);
-        // setTimeout( () => {
-        //     this.props.dispatch(currentUser());
-        // }, 1000);
         this.props.dispatch(currentUser());
     }
 
@@ -32,20 +29,17 @@ class NavBar extends React.Component<NavbarProps> {
                         <li className="nav-item px-3">
                             <a className="nav-link" href="/">Home <span className="sr-only">(current)</span></a>
                         </li>
-                        {this.props.user ? (
-                            <li className="nav-item px-3">
-                                <a className="nav-link" href="/dashboard">Dashboard</a>
-                            </li>
-                        ) : (
-                            <li className="nav-item px-3">
-                                <a className="nav-link" href="/docs">Documentation</a>
-                            </li>
-                        )}
+                        <li className="nav-item px-3">
+                            <a className="nav-link" href="/docs">Documentation</a>
+                        </li>
                     </ul>
                     {this.props.user ? (
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item px-3">
-                            <a className="nav-link" href="/signout">Sign out</a>
+                                <a className="nav-link" href="/dashboard">Dashboard</a>
+                            </li>
+                            <li className="nav-item px-3">
+                                <a className="nav-link" href="/signout">Sign out</a>
                             </li>
                         </ul>
                     ) : (

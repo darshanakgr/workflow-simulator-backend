@@ -12,7 +12,7 @@ export const signIn = (email: string, password: string) => {
                 Auth.authenticateUser(res.data.token);
                 return resolve();
             }).catch(e => {
-                dispatch(showMessage(true, "Email and password don't match!"));
+                dispatch(showMessage(true, "Email and password don't have match :("));
                 return reject();
             });
         });

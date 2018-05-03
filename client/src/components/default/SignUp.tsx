@@ -3,8 +3,6 @@ import * as ReactDOM from "react-dom";
 import { Dispatch, connect } from "react-redux";
 import { signUp } from "../../services/user";
 import { withRouter } from "react-router";
-import Alert from "./Alert";
-// import { browserHistory } from "react-router";
 
 interface SignUpProps {
     dispatch: Dispatch<{}>;
@@ -32,7 +30,6 @@ class SignUp extends React.Component<SignUpProps> {
                 <div className="main login-container">
                     <div className="login">
                         <h2 style={{color: "#ecf0f1"}}>Sign Up</h2>
-                        <Alert />
                         <form ref="loginForm" onSubmit={this.handleSignUp.bind(this)}>
                             <div className="form-group">
                                 {/* <label htmlFor="groupId">Email</label> */}

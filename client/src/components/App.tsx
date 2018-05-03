@@ -6,7 +6,6 @@ import Dashboard from "./dashboard/App";
 import TaskGroup from "./dashboard/TaskGroup";
 import Search from "./dashboard/Search";
 import TaskGroupView from "./dashboard/TaskGroupView";
-import Documentation from "./default/Documentation";
 import Home from "./default/Home";
 import Main from "./default/Main";
 import SignIn from "./default/SignIn";
@@ -15,6 +14,7 @@ import SignOut from "./default/SignOut";
 import Shared from "./dashboard/Shared";
 import SharedView from "./dashboard/SharedView";
 import Notification from "./dashboard/Notification";
+import Documentation from "./default/Documentation";
 
 class App extends React.Component {
   constructor(props: any) {

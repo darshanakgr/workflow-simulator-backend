@@ -9,7 +9,7 @@ export const createTask = (task) => {
         axios.post("http://localhost:3001/api/task", task).then((res) => {
             dispatch(actions.createTask(res.data));
             dispatch(findTaskGroup(task.groupId));
-        }).catch((e) => dispatch(showMessage(true, e.message)));
+        }).catch((e) => dispatch(showMessage(true, "Unable to create a Task")));
     };
 };
 
@@ -17,7 +17,7 @@ export const findTasks = (groupId: string) => {
     return (dispatch: Dispatch<{}>) => {
         axios.get(`http://localhost:3001/api/task/${groupId}`).then((res) => {
             dispatch(actions.findTasks(res.data));
-        }).catch((e) => dispatch(showMessage(true, e.message)));
+        }).catch((e) => dispatch(showMessage(true, "Unable to connect to server")));
     };
 };
 
@@ -28,7 +28,7 @@ export const deleteTask = (groupId: string, taskId: string) => {
             dispatch(findTaskGroup(groupId));
             dispatch(showMessage(false, "Task Deleted Successfully"));
         }).catch((e) => {
-            dispatch(showMessage(true, e.message));
+            dispatch(showMessage(true, "Unable to delete the task"));
         });
     };
 };

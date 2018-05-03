@@ -4,7 +4,6 @@ import { Dispatch, connect } from "react-redux";
 import { signIn } from "../../services/user";
 import { withRouter } from "react-router";
 import { browserHistory } from "react-router";
-import Alert from "./Alert";
 
 interface SignInProps {
     dispatch: Dispatch<{}>;
@@ -29,7 +28,6 @@ class SignIn extends React.Component<SignInProps> {
                 <div className="main login-container">
                     <div className="login">
                         <h2 style={{color: "#ecf0f1"}}>Login to your account</h2>
-                        <Alert />
                         <form ref="loginForm" onSubmit={this.handleSignIn.bind(this)}>
                             <div className="form-group">
                                 {/* <label htmlFor="groupId">Email</label> */}
