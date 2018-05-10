@@ -40,3 +40,7 @@ app.get("*", (req, res) => {
 server.listen(port, () => {
   console.log(`Server is up on ${port}`);
 });
+
+// export for testing
+
+export default app;

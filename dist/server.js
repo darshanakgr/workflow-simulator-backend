@@ -37,4 +37,6 @@ app.get("*", (req, res) => {
 server.listen(port, () => {
     console.log(`Server is up on ${port}`);
 });
+// export for testing
+exports.default = app;
 //# sourceMappingURL=server.js.map
