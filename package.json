@@ -7,14 +7,15 @@
     "node": "8.9.3"
   },
   "scripts": {
-    "start": "node dist/server.js",
-    "build": "npm run build-ts && npm run tslint && copy-static-assets",
+    "start": "npm run build && node dist/server.js",
+    "build": "npm run build-ts && npm run tslint && npm run build-client && npm run copy-static-assets",
     "dev": "SET NODE_ENV=dev&& nodemon dist/server.js",
     "test": "mocha -r ts-node/register src/test/index.ts",
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "copy-static-assets": "ts-node copyStaticAssets.ts"
+    "copy-static-assets": "ts-node copyStaticAssets.ts",
+    "build-client": "cd client/ && npm run build"
   },
   "dependencies": {
     "axios": "^0.18.0",
