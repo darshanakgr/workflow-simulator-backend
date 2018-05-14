@@ -15,6 +15,7 @@ import Shared from "./dashboard/Shared";
 import SharedView from "./dashboard/SharedView";
 import Notification from "./dashboard/Notification";
 import Documentation from "./default/Documentation";
+import Settings from "./dashboard/Settings";
 
 class App extends React.Component {
   constructor(props: any) {
@@ -37,6 +38,7 @@ class App extends React.Component {
                   <Route path="/dashboard/shared" component={Shared} />
                   <Route path="/dashboard/shared/:groupId" component={SharedView} />
                   <Route path="/dashboard/notification" component={Notification} />
+                  <Route path="/dashboard/settings" component={Settings} />
                 </Route>
             </Route>
             <Route path="/signout" component={SignOut} />

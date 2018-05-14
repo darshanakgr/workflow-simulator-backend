@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node dist/server.js",
-    "build": "npm run build-ts && npm run tslint",
+    "build": "npm run build-ts && npm run tslint && copy-static-assets",
     "dev": "SET NODE_ENV=dev&& nodemon dist/server.js",
     "test": "mocha -r ts-node/register src/test/index.ts",
     "build-ts": "tsc",
@@ -33,6 +33,7 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "redis": "^2.8.0",
+    "shelljs": "^0.8.2",
     "socket.io": "^2.0.4"
   },
   "devDependencies": {

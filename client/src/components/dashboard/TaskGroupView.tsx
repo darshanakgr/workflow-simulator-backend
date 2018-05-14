@@ -54,41 +54,54 @@ class TaskGroupView extends React.Component<TaskGroupViewProps, TaskGroupState> 
         });
     }
 
-    handleSave() {
-        const predecessors: string = (findDOMNode(this.refs.parent) as HTMLInputElement).value;
-        this.props.dispatch(createTask({
-            groupId: (findDOMNode(this.refs.groupId) as HTMLInputElement).value,
-            taskId: (findDOMNode(this.refs.taskId) as HTMLInputElement).value,
-            name: (findDOMNode(this.refs.name) as HTMLInputElement).value,
-            description: (findDOMNode(this.refs.description) as HTMLInputElement).value,
-            progress: parseInt((findDOMNode(this.refs.progress) as HTMLInputElement).value),
-            predecessors: predecessors == "" ? [] : [predecessors],
-            successors: []
-        }));
-        this.handleClose();
+    handleSave(e: React.FormEvent<HTMLElement>) {
+        e.preventDefault();
+        const form = findDOMNode(this.refs.newTaskForm) as HTMLFormElement;
+        if (form.checkValidity()) {
+            const predecessors: string = (findDOMNode(this.refs.parent) as HTMLInputElement).value;
+            this.props.dispatch(createTask({
+                groupId: (findDOMNode(this.refs.groupId) as HTMLInputElement).value,
+                taskId: (findDOMNode(this.refs.taskId) as HTMLInputElement).value,
+                name: (findDOMNode(this.refs.name) as HTMLInputElement).value,
+                description: (findDOMNode(this.refs.description) as HTMLInputElement).value,
+                progress: parseInt((findDOMNode(this.refs.progress) as HTMLInputElement).value),
+                predecessors: predecessors == "" ? [] : [predecessors],
+                successors: []
+            }));
+            this.handleClose();
+        }
     }
 
-    handleEdit() {
-        this.props.dispatch(editTaskGroup(this.state)).then((taskGroup) => {
-            if (taskGroup) {
-                this.setState({
-                    groupId: taskGroup.groupId,
-                    name: taskGroup.name,
-                    description: taskGroup.description,
-                    createdOn: taskGroup.createdOn
-                });
-            }
-            (findDOMNode(this.refs.editCloseBtn) as HTMLButtonElement).click();
-        });
+    handleEdit(e: React.FormEvent<HTMLElement>) {
+        e.preventDefault();
+        const form = findDOMNode(this.refs.editTaskGroupForm) as HTMLFormElement;
+        if (form.checkValidity()) {
+            this.props.dispatch(editTaskGroup(this.state)).then((taskGroup) => {
+                if (taskGroup) {
+                    this.setState({
+                        groupId: taskGroup.groupId,
+                        name: taskGroup.name,
+                        description: taskGroup.description,
+                        createdOn: taskGroup.createdOn
+                    });
+                }
+                (findDOMNode(this.refs.editCloseBtn) as HTMLButtonElement).click();
+            });
+        }
     }
 
     handleTaskDelete(e) {
         this.props.dispatch(deleteTask(this.groupId, e.target.id));
     }
 
-    handleShare() {
-        const email: string = (findDOMNode(this.refs.email) as HTMLInputElement).value;
-        this.props.dispatch(shareTaskGroup(email, this.groupId));
+    handleShare(e: React.FormEvent<HTMLElement>) {
+        e.preventDefault();
+        const form = findDOMNode(this.refs.shareTaskGroupForm) as HTMLFormElement;
+        if (form.checkValidity()) {
+            const email: string = (findDOMNode(this.refs.email) as HTMLInputElement).value;
+            this.props.dispatch(shareTaskGroup(email, this.groupId));
+            (findDOMNode(this.refs.closeShareBtn) as HTMLButtonElement).click();
+        }
     }
 
     handleDelete() {
@@ -196,42 +209,42 @@ class TaskGroupView extends React.Component<TaskGroupViewProps, TaskGroupState> 
                 <div className="modal fade" id="new-task-group" role="dialog" aria-labelledby="new-task-group-label" aria-hidden="true">
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="new-task-group-label">New Task</h5>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div className="modal-body">
-                            <form>
-                                <div className="form-group">
-                                    <input ref="groupId"type="text" className="form-control" value={this.groupId} disabled />
-                                </div>
-                                <div className="form-group">
-                                    <input ref="taskId"type="text" className="form-control" placeholder="Task ID" />
-                                </div>
-                                <div className="form-group">
-                                    <input ref="name"type="text" className="form-control" placeholder="Name" />
-                                </div>
-                                <div className="form-group">
-                                    <input ref="description"type="text" className="form-control" placeholder="Description" />
-                                </div>
-                                <div className="form-group">
-                                    <input ref="progress" type="number" className="form-control" placeholder="Progress" min="0" max="100"/>
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="parent">Parent</label>
-                                    <select ref="parent" className="form-control">
-                                        <option value="">None</option>
-                                        {parents}
-                                    </select>
-                                </div>
-                            </form>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" ref="closeBtn" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary" onClick={this.handleSave.bind(this)}>Save</button>
-                        </div>
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="new-task-group-label">New Task</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <form ref="newTaskForm" onSubmit={this.handleSave.bind(this)}>
+                                    <div className="form-group">
+                                        <input ref="groupId"type="text" className="form-control" value={this.groupId} disabled />
+                                    </div>
+                                    <div className="form-group">
+                                        <input ref="taskId"type="text" className="form-control" placeholder="Task ID" required />
+                                    </div>
+                                    <div className="form-group">
+                                        <input ref="name"type="text" className="form-control" placeholder="Name" required />
+                                    </div>
+                                    <div className="form-group">
+                                        <input ref="description"type="text" className="form-control" placeholder="Description" />
+                                    </div>
+                                    <div className="form-group">
+                                        <input ref="progress" type="number" className="form-control" placeholder="Progress" min="0" max="100" required/>
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="parent">Parent</label>
+                                        <select ref="parent" className="form-control">
+                                            <option value="">None</option>
+                                            {parents}
+                                        </select>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" ref="closeBtn" data-dismiss="modal">Close</button>
+                                        <input type="submit" className="btn btn-primary" value="Save"/>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -240,24 +253,24 @@ class TaskGroupView extends React.Component<TaskGroupViewProps, TaskGroupState> 
                 <div className="modal fade" id="share-task-group" role="dialog" aria-labelledby="share-task-group-label" aria-hidden="true">
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="share-task-group-label">Share Task Group</h5>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div className="modal-body">
-                            <form>
-                                <div className="form-group">
-                                    <label htmlFor="email">Enter the email address of the user</label>
-                                    <input ref="email"type="text" className="form-control" placeholder="someone@example.com" />
-                                </div>
-                            </form>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" ref="closeBtn" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary" onClick={this.handleShare.bind(this)}>Save</button>
-                        </div>
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="share-task-group-label">Share Task Group</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <form ref="shareTaskGroupForm" onSubmit={this.handleShare.bind(this)}>
+                                    <div className="form-group">
+                                        <label htmlFor="email">Enter the email address of the user</label>
+                                        <input ref="email"type="text" className="form-control" placeholder="someone@example.com" required />
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" ref="closeShareBtn" data-dismiss="modal">Close</button>
+                                        <input type="submit" className="btn btn-primary" value="Share" />
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -266,62 +279,64 @@ class TaskGroupView extends React.Component<TaskGroupViewProps, TaskGroupState> 
                 <div className="modal fade" id="edit-task-group" role="dialog" aria-labelledby="edit-task-group-label" aria-hidden="true">
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="edit-task-group-label">Edit Task Group</h5>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div className="modal-body">
-                            <form>
-                                <div className="form-group">
-                                    <label htmlFor="groupId">Task Group ID</label>
-                                    <input
-                                        ref="editGroupId"
-                                        type="text"
-                                        className="form-control"
-                                        disabled
-                                        value={this.state.groupId}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="name">Name</label>
-                                    <input
-                                        ref="editName"
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Name"
-                                        value={this.state.name}
-                                        onChange={ e => this.setState({
-                                            groupId: this.state.groupId,
-                                            name: e.target.value,
-                                            description: this.state.description,
-                                            createdOn: this.state.createdOn
-                                        })}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="description">Description</label>
-                                    <input
-                                        ref="editDescription"
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Description"
-                                        value={this.state.description}
-                                        onChange={ e => this.setState({
-                                            groupId: this.state.groupId,
-                                            description: e.target.value,
-                                            name: this.state.name,
-                                            createdOn: this.state.createdOn
-                                        })}
-                                    />
-                                </div>
-                            </form>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" ref="editCloseBtn" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary" onClick={this.handleEdit.bind(this)}>Save Changes</button>
-                        </div>
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="edit-task-group-label">Edit Task Group</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <form ref="editTaskGroupForm" onSubmit={this.handleEdit.bind(this)}>
+                                    <div className="form-group">
+                                        <label htmlFor="groupId">Task Group ID</label>
+                                        <input
+                                            ref="editGroupId"
+                                            type="text"
+                                            className="form-control"
+                                            disabled
+                                            value={this.state.groupId}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="name">Name</label>
+                                        <input
+                                            ref="editName"
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Name"
+                                            value={this.state.name}
+                                            onChange={ e => this.setState({
+                                                groupId: this.state.groupId,
+                                                name: e.target.value,
+                                                description: this.state.description,
+                                                createdOn: this.state.createdOn
+                                            })}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="description">Description</label>
+                                        <input
+                                            ref="editDescription"
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Description"
+                                            value={this.state.description}
+                                            onChange={ e => this.setState({
+                                                groupId: this.state.groupId,
+                                                description: e.target.value,
+                                                name: this.state.name,
+                                                createdOn: this.state.createdOn
+                                            })}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" ref="editCloseBtn" data-dismiss="modal">Close</button>
+                                        <input type="submit" className="btn btn-primary" value="Save Changes"/>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
