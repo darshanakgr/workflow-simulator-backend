@@ -7,7 +7,7 @@
     "node": "8.9.3"
   },
   "scripts": {
-    "start": "npm run build && node dist/server.js",
+    "start": "node dist/server.js",
     "build": "npm run build-ts && npm run tslint && npm run build-client && npm run copy-static-assets",
     "dev": "SET NODE_ENV=dev&& nodemon dist/server.js",
     "test": "mocha -r ts-node/register src/test/index.ts",

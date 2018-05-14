@@ -12,11 +12,6 @@ pids
 logs
 results
 tmp
-dist
-client/build
-
-#Build
-public/css/main.css
 
 # API keys and secrets
 .env
