@@ -38,6 +38,15 @@ export const signOut = () => {
     };
 };
 
+export const updatePassword = (password: string, newPassword: string) => {
+    return (dispatch: Dispatch<{}>) => {
+        axios.post("/api/update", {password, newPassword}).then((res: any) => {
+            dispatch(showMessage(false, "You've successfully changed the password"));
+        }).catch(e => dispatch(showMessage(true, "Unable to change the password")));
+    };
+};
+
+
 export const currentUser = () => {
     return (dispatch: Dispatch<{}>) => {
         return new Promise((resolve, reject) => {

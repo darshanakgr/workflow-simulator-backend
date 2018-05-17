@@ -12,10 +12,19 @@ const Task = mongoose_1.default.model("Task", new mongoose_1.default.Schema({
         type: String,
         unique: true
     },
-    name: String,
+    name: {
+        type: String,
+        required: true
+    },
     description: String,
-    progress: Number,
-    groupId: String,
+    progress: {
+        type: Number,
+        default: 0
+    },
+    groupId: {
+        type: String,
+        required: true
+    },
     predecessors: Array,
     successors: {
         type: Array,

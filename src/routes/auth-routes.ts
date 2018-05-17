@@ -39,4 +39,12 @@ router.post("/signup", (req, res) => {
     });
 });
 
+router.post("/update", authenticate, (req, res) => {
+    UserController.updatePassword(req.user.toString(), req.body.password, req.body.newPassword).then((user) => {
+        res.status(200).send(user);
+    }).catch((e) => {
+        res.status(400).send(e.message);
+    });
+});
+
 export default router;

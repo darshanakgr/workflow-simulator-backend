@@ -34,5 +34,12 @@ router.post("/signup", (req, res) => {
         res.status(400).send(e.message);
     });
 });
+router.post("/update", auth_service_1.authenticate, (req, res) => {
+    user_controller_1.default.updatePassword(req.user.toString(), req.body.password, req.body.newPassword).then((user) => {
+        res.status(200).send(user);
+    }).catch((e) => {
+        res.status(400).send(e.message);
+    });
+});
 exports.default = router;
 //# sourceMappingURL=auth-routes.js.map

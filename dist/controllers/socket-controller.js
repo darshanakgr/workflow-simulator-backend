@@ -131,7 +131,7 @@ const socketHandler = (socket) => {
                 }
                 return task_controller_1.default.findTasksByGroup(groupId);
             }).then((tasks) => {
-                callback(tasks);
+                callback(undefined, tasks);
             }).catch((e) => {
                 callback(e);
             });

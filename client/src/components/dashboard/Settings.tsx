@@ -2,6 +2,7 @@ import * as React from "react";
 import { findDOMNode } from "react-dom";
 import { Dispatch, connect } from "react-redux";
 import { showMessage } from "../../actions/alert";
+import { updatePassword } from "../../services/user";
 
 interface SettingsProps {
     dispatch: Dispatch<{}>;
@@ -13,11 +14,11 @@ class Settings extends React.Component<SettingsProps> {
         e.preventDefault();
         const form = findDOMNode(this.refs.changePasswordForm) as HTMLFormElement;
         if (form.checkValidity) {
-            // const currentPassword = (findDOMNode(this.refs.currentPasswordText) as HTMLInputElement).value;
+            const currentPassword = (findDOMNode(this.refs.currentPasswordText) as HTMLInputElement).value;
             const newPassword = (findDOMNode(this.refs.newPasswordText) as HTMLInputElement).value;
             const confirmPassword = (findDOMNode(this.refs.confirmPasswordText) as HTMLInputElement).value;
             if (newPassword == confirmPassword) {
-                alert("password matched");
+                this.props.dispatch(updatePassword(currentPassword, newPassword));
             } else {
                 this.props.dispatch(showMessage(true, "New Password and Confirm Password should be matched"));
             }

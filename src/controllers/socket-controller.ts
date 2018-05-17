@@ -133,7 +133,7 @@ const socketHandler = (socket: SocketIO.Socket) => {
                 }
                 return TaskController.findTasksByGroup(groupId);
             }).then((tasks) => {
-                callback(tasks);
+                callback(undefined, tasks);
             }).catch((e) => {
                 callback(e);
             });

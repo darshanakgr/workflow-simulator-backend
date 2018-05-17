@@ -22,7 +22,10 @@ const TaskGroup = mongoose.model<ITaskGroup>("TaskGroup", new mongoose.Schema({
             unique: true
         }
     },
-    name: String,
+    name: {
+        type: String,
+        required: true
+    },
     description: String,
     createdOn: {
         type: Date,

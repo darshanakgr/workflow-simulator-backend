@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node dist/server.js",
-    "build": "npm run build-ts && npm run tslint && npm run build-client && npm run copy-static-assets",
+    "build": "npm run build-ts && npm run tslint && npm run build-client",
     "dev": "SET NODE_ENV=dev&& nodemon dist/server.js",
     "test": "mocha -r ts-node/register src/test/index.ts",
     "build-ts": "tsc",
@@ -67,3 +67,4 @@
     "typings": "^2.1.1"
   }
 }
+

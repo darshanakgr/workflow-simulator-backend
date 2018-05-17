@@ -16,5 +16,22 @@ const createUser = (email, password) => {
     user.password = user.hashPassword(password);
     return user.save();
 };
-exports.default = { createUser };
+const updatePassword = (id, password, newPassword) => {
+    return new Promise((resolve, reject) => {
+        user_1.User.findById(id).then((user) => {
+            if (!user.comparePassword(password)) {
+                return reject(new Error("Old password is not matched"));
+            }
+            user.password = user.hashPassword(newPassword);
+            return user_1.User.findByIdAndUpdate(user.id, {
+                $set: user
+            }, {
+                new: true
+            });
+        }).then((user) => {
+            return resolve(user);
+        }).catch(e => reject(e));
+    });
+};
+exports.default = { createUser, updatePassword };
 //# sourceMappingURL=user-controller.js.map

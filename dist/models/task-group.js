@@ -12,7 +12,10 @@ const TaskGroup = db_connection_1.mongoose.model("TaskGroup", new db_connection_
             unique: true
         }
     },
-    name: String,
+    name: {
+        type: String,
+        required: true
+    },
     description: String,
     createdOn: {
         type: Date,

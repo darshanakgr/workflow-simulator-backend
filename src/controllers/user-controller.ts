@@ -16,4 +16,22 @@ const createUser = (email: string, password: string) => {
     return user.save();
 };
 
-export default { createUser };
+const updatePassword = (id: string, password: string, newPassword: string) => {
+    return new Promise((resolve, reject) => {
+        User.findById(id).then((user) => {
+            if (!user.comparePassword(password)) {
+                return reject(new Error("Old password is not matched"));
+            }
+            user.password = user.hashPassword(newPassword);
+            return User.findByIdAndUpdate(user.id, {
+                $set: user
+            }, {
+                new: true
+            });
+        }).then((user) => {
+            return resolve(user);
+        }).catch(e => reject(e));
+    });
+};
+
+export default { createUser, updatePassword };
