@@ -120,6 +120,26 @@ const socketHandler = (socket) => {
             callback("GroupId or Key cannot be empty");
         }
     });
+    /**
+     * Get all the tasks
+     */
+    socket.on("getTasks", (key, groupId, callback) => {
+        if (groupId && key) {
+            permission_controller_1.default.authenticate(key, groupId, types_1.FULL_ACCESS).then((authenticated) => {
+                if (!authenticated) {
+                    return callback("Required access level is not provided");
+                }
+                return task_controller_1.default.findTasksByGroup(groupId);
+            }).then((tasks) => {
+                callback(tasks);
+            }).catch((e) => {
+                callback(e);
+            });
+        }
+        else {
+            callback("GroupId or Key cannot be empty");
+        }
+    });
 };
 exports.default = socketHandler;
 //# sourceMappingURL=socket-controller.js.map

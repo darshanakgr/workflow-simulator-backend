@@ -121,6 +121,26 @@ const socketHandler = (socket: SocketIO.Socket) => {
             callback("GroupId or Key cannot be empty");
         }
     });
+
+    /**
+     * Get all the tasks
+     */
+    socket.on("getTasks", (key: string, groupId: string, callback: Function) => {
+        if (groupId && key) {
+            PermissionController.authenticate(key, groupId, FULL_ACCESS).then((authenticated) => {
+                if (!authenticated) {
+                    return callback("Required access level is not provided");
+                }
+                return TaskController.findTasksByGroup(groupId);
+            }).then((tasks) => {
+                callback(tasks);
+            }).catch((e) => {
+                callback(e);
+            });
+        } else {
+            callback("GroupId or Key cannot be empty");
+        }
+    });
 };
 
 export default socketHandler;
